@@ -1,4 +1,9 @@
 *.json
 *.csv
+*.png
 .idea/
 nialm_monitor.cfg
+.Rproj.user
+.RData
+.Rhistory
+asperathos-tools.Rproj
