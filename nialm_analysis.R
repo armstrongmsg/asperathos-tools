@@ -1,6 +1,6 @@
 library(ggplot2)
 library(dplyr)
-library(gridExtra)
+library(reshape2)
 
 theme_white <- function() {
   theme_update(
@@ -9,9 +9,9 @@ theme_white <- function() {
     axis.title = element_text(size=17),
     legend.title = element_text(size = 16),
     legend.text = element_text(size = 14),
-    axis.text.x = element_text(size=15, angle = 10, hjust = 1),
-    strip.text.y = element_text(size = 12, angle = 90),
-    strip.text.x = element_text(size = 18, angle = 0)
+    axis.text.x = element_text(size=15, angle = 0),
+    strip.text.y = element_text(size = 10, angle = 90),
+    strip.text.x = element_text(size = 10, angle = 0)
   )
 }
 
@@ -29,8 +29,17 @@ ggplot(max_memory, aes(rep, max/10^6)) +
   xlab("Execution number") +
   ylab("Max used memory (GB)")
 
-ggsave("memory_nialm.png")
+ggsave("max_memory_nialm.png")
 
-ggplot(data, aes(timestamp, used_memory)) + 
-  geom_point() + 
-  facet_wrap(rep~application, scales = "free")
+data <- data %>% 
+        group_by(application, node, rep) %>% 
+        mutate(execution_start = first(timestamp))
+data$rel_time <- data$timestamp - data$execution_start
+
+ggplot(data, aes(rel_time, used_memory/10^6)) + 
+  geom_point() +
+  facet_wrap(~application, scales = "free") +
+  xlab("Time (s)") +
+  ylab("Used memory (GB)")
+
+ggsave("memory_nialm.png")
