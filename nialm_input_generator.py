@@ -29,6 +29,7 @@ if __name__ == '__main__':
     sensor_ID = sys.argv[5]
     base_start_timestamp = int(sys.argv[6])
     base_end_timestamp = int(sys.argv[7])
+    load_file_lines = []
 
     for i in range(-number_of_load_files/2, number_of_load_files/2, 1):
         start_timestamp = base_start_timestamp + i
@@ -37,7 +38,6 @@ if __name__ == '__main__':
         filename = "{}-{}-{}".format(base_filename, start_timestamp, end_timestamp)
         load_file_line = "{}-{}-{}".format(sensor_ID, start_timestamp, end_timestamp)
         publish_result(container_name, filename, load_file_line)
-        publish_result(container_name, "{}-list".format(base_filename), "{}{}{}{}".format(swift_api_url,
-                                                                                          container_name,
-                                                                                          os.sep,
-                                                                                          filename))
+        load_file_lines.append("{}{}{}{}".format(swift_api_url, container_name, os.sep, filename))
+ 
+    publish_result(container_name, "{}-list".format(base_filename), "\n".join(load_file_lines))
