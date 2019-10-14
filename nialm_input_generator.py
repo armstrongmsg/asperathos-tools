@@ -36,7 +36,7 @@ if __name__ == '__main__':
         end_timestamp = base_end_timestamp + i
 
         filename = "{}-{}-{}".format(base_filename, start_timestamp, end_timestamp)
-        load_file_line = "{}-{}-{}".format(sensor_ID, start_timestamp, end_timestamp)
+        load_file_line = "{};{};{}".format(sensor_ID, start_timestamp, end_timestamp)
         publish_result(container_name, filename, load_file_line)
         load_file_lines.append("{}{}{}{}".format(swift_api_url, container_name, os.sep, filename))
  
