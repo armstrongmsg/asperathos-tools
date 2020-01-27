@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG_FILE="/home/armstrong/Documents/kubernetes/config_k8s_scaling"
+CONFIG_FILE="/home/armstrong/Documents/kubernetes/config_k8s"
 JOB_ID="$1"
 
 kubectl --kubeconfig=$CONFIG_FILE delete job $JOB_ID

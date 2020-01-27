@@ -8,6 +8,7 @@
 # JOB_CONFIG_FILE="file1.json file2.json"
 # NODES="IP1 IP2 IP3 IP4"
 # OUTPUT_FILE="output.csv"
+# NODE_KEY="/home/user/.ssh/key.pem"
 # REPS=1
 #
 
@@ -28,7 +29,7 @@ do
     echo "Logging memory usage before application starts"
     for i in $(seq 1 10); do
       for NODE in $NODES; do
-        used_mem="$(ssh -i ~/.ssh/scaling-cluster-key.pem ubuntu@"$NODE" free | awk '{ print $3 }' | awk 'FNR == 2 {print $1}')"
+        used_mem="$(ssh -i $NODE_KEY ubuntu@"$NODE" free | awk '{ print $3 }' | awk 'FNR == 2 {print $1}')"
         echo "$rep","$job","$(date +%s)","$NODE","$used_mem" >>"$OUTPUT_FILE"
       done
       sleep 1
@@ -49,7 +50,7 @@ do
     echo "Collecting memory usage"
     while [ $(get_broker_status "$job_id") != "completed" ]; do
       for NODE in $NODES; do
-        used_mem="$(ssh -i ~/.ssh/scaling-cluster-key.pem ubuntu@"$NODE" free | awk '{ print $3 }' | awk 'FNR == 2 {print $1}')"
+        used_mem="$(ssh -i $NODE_KEY ubuntu@"$NODE" free | awk '{ print $3 }' | awk 'FNR == 2 {print $1}')"
         echo "$rep","$job","$(date +%s)","$NODE","$used_mem" >>"$OUTPUT_FILE"
       done
     done
