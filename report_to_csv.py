@@ -12,8 +12,9 @@ for file_path in sys.argv[1:]:
     file_name = ntpath.basename(file_path)
 
     report = report_dict['report']
+    first_time = time.mktime(datetime.datetime.strptime(sorted(report)[0],"%Y-%m-%dT%H:%M:%SZ").timetuple())
     for key in sorted(report):
-        timestamp = time.mktime(datetime.datetime.strptime(key,"%Y-%m-%dT%H:%M:%SZ").timetuple())
+        timestamp = time.mktime(datetime.datetime.strptime(key,"%Y-%m-%dT%H:%M:%SZ").timetuple()) - first_time
         job_progress = report[key]['job_progress']
         error = report[key]['error']
         time_progress = report[key]['time_progress']
