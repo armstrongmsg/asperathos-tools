@@ -7,3 +7,5 @@ nialm_monitor.cfg
 .RData
 .Rhistory
 asperathos-tools.Rproj
+configs/
+results/
